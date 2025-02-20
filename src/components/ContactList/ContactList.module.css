@@ -1,0 +1,19 @@
+.contactList {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  min-width: 280px;
+  width: 50%;
+}
+
+.contactList > li {
+  min-width: 280px;
+  width: 100%;
+}
+
+@media screen and (min-width: 584px) {
+  .contactList > li {
+    flex-basis: calc((100% - 24px) / 2);
+  }
+}
