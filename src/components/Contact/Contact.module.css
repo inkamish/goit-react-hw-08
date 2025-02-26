@@ -13,15 +13,12 @@ p {
 }
 
 .btn {
-  background-color: rgb(222, 33, 33);
-  font-weight: 600;
-  padding: 8px 0;
-  color: aliceblue;
+  background-color: rgb(212, 30, 30);
+  padding: 8px;
   border: none;
-  border-radius: 12px;
   cursor: pointer;
-  font-size: 16px;
-  line-height: 1.2em;
+  color: azure;
+  border-radius: 8px;
 }
 
 .btn:hover {
@@ -31,4 +28,12 @@ p {
 .contactName {
   font-weight: 500;
   font-size: 18px;
+}
+
+.icon {
+  fill: none;
+  stroke: black;
+  stroke-width: 2px;
+  height: 32px;
+  width: 32px;
 }

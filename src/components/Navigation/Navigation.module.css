@@ -1,0 +1,8 @@
+.nav {
+  display: flex;
+  gap: 12px;
+}
+
+.nav a:hover {
+  color: rgba(0, 0, 255, 0.5);
+}

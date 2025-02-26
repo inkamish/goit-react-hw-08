@@ -3,8 +3,8 @@ import * as Yup from "yup";
 import { useId } from "react";
 import styles from "./ContactForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addContactToServer } from "../../redux/contactsOps";
-import { selectIsLoading, selectError } from "../../redux/selectors";
+import { addContactToServer } from "../../redux/contacts/operations";
+import { selectIsLoading, selectError } from "../../redux/contacts/selectors";
 
 const ContactForm = () => {
   const nameId = useId();
