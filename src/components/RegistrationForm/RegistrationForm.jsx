@@ -16,6 +16,8 @@ const RegistrationForm = () => {
   const error = useSelector(selectError);
 
   const validationSchema = Yup.object({
+    name: Yup.string()
+    .required("Name is required"),
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
@@ -108,7 +110,7 @@ const RegistrationForm = () => {
         </div>
 
         <button type="submit" className={styles.btn}>
-          Log in
+          Login
         </button>
 
         {error && <p className={styles.error}>Error: {error}</p>}

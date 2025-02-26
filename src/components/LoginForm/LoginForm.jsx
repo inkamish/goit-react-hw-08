@@ -5,11 +5,11 @@ import styles from "./LoginForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/auth/operations";
 import { selectIsLoading, selectError } from "../../redux/auth/selectors";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoginForm = () => {
   const emailId = useId();
   const passwordId = useId();
-
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
@@ -30,62 +30,66 @@ const LoginForm = () => {
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
-      await dispatch(
-        login({
-          email: values.email,
-          password: values.password,
-        })
-      ).unwrap();
-      resetForm();
+      const userData = await dispatch(login(values)).unwrap();
+
+      if (userData.token) {
+        toast.success("Successfully logged in!");
+        resetForm();
+      } else {
+        toast.error("Unexpected error, please try again.");
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      <Form autoComplete="off" className={styles.form}>
-        <div className={styles.formElement}>
-          <label htmlFor={emailId}>Email</label>
-          <Field
-            className={styles.input}
-            id={emailId}
-            name="email"
-            type="email"
-          />
-          <ErrorMessage
-            className={styles.error}
-            name="email"
-            component="span"
-          />
-        </div>
+    <>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form autoComplete="off" className={styles.form}>
+          <div className={styles.formElement}>
+            <label htmlFor={emailId}>Email</label>
+            <Field
+              className={styles.input}
+              id={emailId}
+              name="email"
+              type="email"
+            />
+            <ErrorMessage
+              className={styles.error}
+              name="email"
+              component="span"
+            />
+          </div>
 
-        <div className={styles.formElement}>
-          <label htmlFor={passwordId}>Password</label>
-          <Field
-            className={styles.input}
-            id={passwordId}
-            name="password"
-            type="password"
-          />
-          <ErrorMessage
-            className={styles.error}
-            name="password"
-            component="span"
-          />
-        </div>
+          <div className={styles.formElement}>
+            <label htmlFor={passwordId}>Password</label>
+            <Field
+              className={styles.input}
+              id={passwordId}
+              name="password"
+              type="password"
+            />
+            <ErrorMessage
+              className={styles.error}
+              name="password"
+              component="span"
+            />
+          </div>
 
-        <button type="submit" className={styles.btn} disabled={isLoading}>
-          {isLoading ? "Logining..." : "Login"}
-        </button>
+          <button type="submit" className={styles.btn} disabled={isLoading}>
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
 
-        {error && <p className={styles.error}>Error: {error}</p>}
-      </Form>
-    </Formik>
+          {error && <p className={styles.error}>Error: {error}</p>}
+        </Form>
+      </Formik>
+    </>
   );
 };
 

@@ -31,7 +31,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
-        state.error = action.payload || "email or password is incorrect";
+        state.error = action.payload || "Email or password is incorrect";
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = { name: null, email: null };
@@ -50,7 +50,12 @@ const authSlice = createSlice({
       })
       .addCase(refreshUser.rejected, (state, action) => {
         state.isRefreshing = false;
-        state.token = null;
+
+        if (action.payload === "Session expired. Please login again.") {
+          state.token = null;
+          state.isLoggedIn = false;
+        }
+
         state.error = action.payload || "Failed to refresh user";
       });
   },
