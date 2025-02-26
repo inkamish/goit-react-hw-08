@@ -5,7 +5,6 @@ import styles from "./LoginForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/auth/operations";
 import { selectIsLoading, selectError } from "../../redux/auth/selectors";
-import toast, { Toaster } from "react-hot-toast";
 
 const LoginForm = () => {
   const emailId = useId();
@@ -33,10 +32,7 @@ const LoginForm = () => {
       const userData = await dispatch(login(values)).unwrap();
 
       if (userData.token) {
-        toast.success("Successfully logged in!");
         resetForm();
-      } else {
-        toast.error("Unexpected error, please try again.");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -45,7 +41,6 @@ const LoginForm = () => {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "../redux/auth/operations";
 import { selectIsRefreshing, selectIsLoggedIn } from "../redux/auth/selectors";
 import styles from "./App.module.css";
+import { Toaster } from "react-hot-toast";
 
 import Loader from "./Loader/Loader";
 import Layout from "./Layout/Layout";
@@ -38,6 +39,7 @@ const App = () => {
 
   return (
     <div className={styles.container}>
+      <Toaster position="top-center" reverseOrder={false} />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Layout />}>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 
 axios.defaults.baseURL = "https://connections-api.goit.global/";
 
@@ -17,6 +18,7 @@ export const fetchContacts = createAsyncThunk(
 
       return response.data;
     } catch (error) {
+      toast.error("Failed to load contacts");
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -38,8 +40,10 @@ export const addContactToServer = createAsyncThunk(
         }
       );
 
+      toast.success("Contact added successfully!");
       return response.data;
     } catch (error) {
+      toast.error("Failed to add contact");
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -57,8 +61,10 @@ export const deleteContact = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      toast.success("Contact deleted successfully!");
       return contactId;
     } catch (error) {
+      toast.error("Failed to delete contact");
       return thunkAPI.rejectWithValue(error.message);
     }
   }
