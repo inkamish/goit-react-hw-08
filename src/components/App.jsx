@@ -1,9 +1,9 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "../redux/auth/operations";
-import { selectIsRefreshing, selectIsLoggedIn } from "../redux/auth/selectors";
+import { selectIsRefreshing } from "../redux/auth/selectors";
 import styles from "./App.module.css";
 import { Toaster } from "react-hot-toast";
 
@@ -20,20 +20,12 @@ const ContactsPage = lazy(() => import("../pages/ContactsPage"));
 const App = () => {
   const dispatch = useDispatch();
   const isRefreshing = useSelector(selectIsRefreshing);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
     dispatch(refreshUser());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (!isRefreshing && isLoggedIn !== null) {
-      setIsAppReady(true);
-    }
-  }, [isRefreshing, isLoggedIn]);
-
-  if (!isAppReady) {
+  if (isRefreshing) {
     return <Loader />;
   }
 

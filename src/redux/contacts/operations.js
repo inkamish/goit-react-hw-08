@@ -2,19 +2,23 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
-axios.defaults.baseURL = "https://connections-api.goit.global/";
+const api = axios.create({
+  baseURL: "https://connections-api.goit.global/",
+});
+
+const getAuthHeader = (state) => {
+  const token = state.auth.token;
+  if (!token) throw new Error("No token found");
+  return { Authorization: `Bearer ${token}` };
+};
 
 export const fetchContacts = createAsyncThunk(
   "contacts/fetchAll",
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      const token = state.auth.token;
-      if (!token) throw new Error("No token found");
-
-      const response = await axios.get("/contacts", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const headers = getAuthHeader(state);
+      const response = await api.get("/contacts", { headers });
 
       return response.data;
     } catch (error) {
@@ -29,15 +33,12 @@ export const addContactToServer = createAsyncThunk(
   async ({ name, number }, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      const token = state.auth.token;
-      if (!token) throw new Error("No token found");
+      const headers = getAuthHeader(state);
 
-      const response = await axios.post(
+      const response = await api.post(
         "/contacts",
         { name, number },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers }
       );
 
       toast.success("Contact added successfully!");
@@ -54,12 +55,9 @@ export const deleteContact = createAsyncThunk(
   async (contactId, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      const token = state.auth.token;
-      if (!token) throw new Error("No token found");
+      const headers = getAuthHeader(state);
 
-      await axios.delete(`/contacts/${contactId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/contacts/${contactId}`, { headers });
 
       toast.success("Contact deleted successfully!");
       return contactId;

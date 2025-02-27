@@ -7,17 +7,23 @@ import { combineReducers } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const persistConfig = {
-  key: "root",
+const authPersistConfig = {
+  key: "auth",
   storage,
-  whitelist: ["contacts", "filters", "auth"],
+  whitelist: ["token"],
 };
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
   filters: filterReducer,
-  auth: authReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
 });
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["contacts", "filters"],
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
